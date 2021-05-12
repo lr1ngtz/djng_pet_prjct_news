@@ -1,6 +1,6 @@
 from django import template
 
-from news_app.models import Category
+from ..models import Category
 
 register = template.Library()
 
