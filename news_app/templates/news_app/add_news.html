@@ -15,10 +15,63 @@
 
   <h1>Add news</h1>
   <form action="{% url "add_news" %}" method="post">
-  {% comment %} form will not work without  '{% csrf_token %}' {% endcomment %}
+  <!-- form will not work without '{% csrf_token %}' -->
     {% csrf_token %}
-  {% comment %} 'as_p' means that each field will be closed in paragraph {% endcomment %}
+
+  <!-- First way to withdraw our form in html -->
+  <!--'as_p' means that each field will be closed in paragraph -->
     {{ form.as_p }}
+
+  <!-- Second way to withdraw our form in html -->
+    {% comment %}
+    <!-- code from line 27 to 59 works like 'form.as_p', but we have more opportunities to customize each block -->
+    {{ form.non_field.errors }}
+    <div class="form-group">
+      <label for="{{ form.title.id_for_label }}">Title: </label>
+      {{ form.title }}
+      <div class="invalid-feedback">
+        {{ form.title.errors }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.content.id_for_label }}">Content: </label>
+      {{ form.content }}
+      <div class="invalid-feedback">
+        {{ form.content.errors }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.is_published.id_for_label }}">Is published?: </label>
+      {{ form.is_published }}
+      <div class="invalid-feedback">
+        {{ form.is_published.errors }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.category.id_for_label }}">Category: </label>
+      {{ form.category }}
+      <div class="invalid-feedback">
+        {{ form.category.errors }}
+      </div>
+    </div>
+    {% endcomment %}
+
+  <!-- Third way to withdraw our form in html -->
+  {% comment %}
+  {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {{ field }}
+      <div class="invalid-feedback">
+        {{ field.errors }}
+      </div>
+    </div>
+  {% endfor %}
+  {% endcomment %}
+
     <button type="submit" class="btn btn-primary">Add news</button>
   </form>
 
