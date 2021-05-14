@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
 from .models import Category, News
+from .forms import NewsForm
 
 
 def index(request):
@@ -27,3 +28,15 @@ def view_news(request, news_id):
     news_item = get_object_or_404(News, pk=news_id)
     context = {"news_item": news_item}
     return render(request, 'news_app/view_news.html', context=context)
+
+
+def add_news(request):
+    if request.method == "POST":
+        pass
+    else:
+        form = NewsForm()
+
+    context = {
+        "form": form
+    }
+    return render(request, 'news_app/add_news.html', context)

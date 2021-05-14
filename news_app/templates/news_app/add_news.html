@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+  {% comment %} If we need override block 'title' and call parent method(data from block 'title' of base template) {% endcomment %}
+  Add news :: {{ block.super }}
+
+{% endblock title %}
+
+{% block sidebar %}
+  {% include "inc/_sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+
+  <h1>Add news</h1>
+  <form action="{% url "add_news" %}" method="post">
+  {% comment %} form will not work without  '{% csrf_token %}' {% endcomment %}
+    {% csrf_token %}
+  {% comment %} 'as_p' means that each field will be closed in paragraph {% endcomment %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add news</button>
+  </form>
+
+{% endblock content %}
