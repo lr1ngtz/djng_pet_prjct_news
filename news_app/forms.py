@@ -1,6 +1,8 @@
 from django import forms
+import re
+from django.core.exceptions import ValidationError
 
-from .models import Category, News
+from .models import News
 
 
 class NewsForm(forms.ModelForm):
@@ -16,6 +18,14 @@ class NewsForm(forms.ModelForm):
             }),
             "category": forms.Select(attrs={"class": "form-control"}),
         }
+
+    def clean_title(self):
+        """Custom validator that doesn't allow to create a title which starts
+        with a number!"""
+        title = self.cleaned_data["title"]
+        if re.match(r"\d", title):
+            raise ValidationError("Title mustn't start with a number!")
+        return title
 
 
 # class NewsForm(forms.Form):
