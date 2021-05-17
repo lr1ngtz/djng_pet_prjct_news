@@ -1,7 +1,23 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView
 
 from .models import Category, News
 from .forms import NewsForm
+
+
+class HomeNews(ListView):
+    # # Analogue 'news = News.objects.all()'
+    model = News
+    template_name = "news_app/home_news_list.html"
+    context_object_name = "news"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Main page"
+        return context
+
+    def get_queryset(self):
+        return News.objects.filter(is_published=True)
 
 
 def index(request):
