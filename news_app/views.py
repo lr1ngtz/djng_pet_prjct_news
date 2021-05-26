@@ -19,7 +19,11 @@ class HomeNews(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True)
+        """'select_related' works only with models that have a 'foreign key'
+        relation.
+        We use 'select_related' to optimize sql-queries, which calls when our
+        page is working"""
+        return News.objects.filter(is_published=True).select_related('category')
 
 
 class NewsByCategory(ListView):
@@ -32,7 +36,7 @@ class NewsByCategory(ListView):
         return News.objects.filter(
             category_id=self.kwargs["category_id"],
             is_published=True
-        )
+        ).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
