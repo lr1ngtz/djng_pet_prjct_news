@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+  {% comment %} If we need override block 'title' and call parent method(data from block 'title' of base template) {% endcomment %}
+  Test page :: {{ block.super }}
+
+{% endblock title %}
+
+{% block sidebar %}
+  {% include "inc/_sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+
+  {% for el in page_obj.object_list %}
+    <p>{{ el }}</p>
+  {% endfor %}
+
+{% endblock content %}
