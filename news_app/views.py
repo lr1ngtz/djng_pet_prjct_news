@@ -1,21 +1,25 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import NewsForm
 from .models import Category, News
+from .utils import MyMixin
 
 
-class HomeNews(ListView):
+class HomeNews(MyMixin, ListView):
     """This class-based view works like function 'index'"""
     # # Analogue 'news = News.objects.all()'
     model = News
     template_name = "news_app/home_news_list.html"
     context_object_name = "news"
+    mixin_prop = 'some string'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Main page"
+        context["title"] = self.get_upper("Main page")
+        context['mixin_prop'] = self.get_prop()
         return context
 
     def get_queryset(self):
@@ -26,7 +30,7 @@ class HomeNews(ListView):
         return News.objects.filter(is_published=True).select_related('category')
 
 
-class NewsByCategory(ListView):
+class NewsByCategory(MyMixin, ListView):
     model = News
     template_name = "news_app/home_news_list.html"
     context_object_name = "news"
@@ -40,7 +44,7 @@ class NewsByCategory(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = Category.objects.get(pk=self.kwargs["category_id"])
+        context["title"] = self.get_upper(Category.objects.get(pk=self.kwargs["category_id"]))
         return context
 
 
@@ -50,11 +54,18 @@ class ViewNews(DetailView):
     context_object_name = "news_item"
 
 
-class CreateNews(CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
+    """We use 'LoginRequiredMixin' when we want to hide controller(view)"""
     form_class = NewsForm
     template_name = "news_app/add_news.html"
-    # We define 'success_url' if we didn't define
-    # 'get_absolute_url' in our Model
+    # # redirect to admin if we aren't authenticated and trying to go
+    # # to '/add_news/
+    login_url = '/admin/'  # From LoginRequiredMixin
+    # # redirect to '403 Forbidden' if we aren't authenticated and trying to go
+    # # to '/add_news/
+    # raise_exception = True  # From LoginRequiredMixin
+    # # We define 'success_url' if we didn't define
+    # # 'get_absolute_url' in our Model
     # success_url = reverse_lazy("home")
 
 
