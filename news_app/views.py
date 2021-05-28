@@ -10,6 +10,8 @@ from .utils import MyMixin
 
 
 def test(request):
+    """In this function we show how built-in pagination works with
+    function-based views."""
     objects = ['igor', 'oleg', 'petya', 'vasya', 'pasha', 'artem', 'anton']
     paginator = Paginator(objects, 2)
     page_num = request.GET.get('page', 1)
@@ -23,7 +25,8 @@ class HomeNews(MyMixin, ListView):
     model = News
     template_name = "news_app/home_news_list.html"
     context_object_name = "news"
-    mixin_prop = 'some string'
+    mixin_prop = 'string from mixin'
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,6 +47,7 @@ class NewsByCategory(MyMixin, ListView):
     template_name = "news_app/home_news_list.html"
     context_object_name = "news"
     allow_empty = False
+    paginate_by = 2
 
     def get_queryset(self):
         return News.objects.filter(
