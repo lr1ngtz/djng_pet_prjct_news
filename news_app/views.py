@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.contrib.auth import login, logout
 from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-from .forms import NewsForm, UserRegistrationForm
+from .forms import NewsForm, UserRegistrationForm, UserLoginForm
 from .models import Category, News
 from .utils import MyMixin
 
@@ -14,9 +15,11 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            # automatically login after register
+            login(request, user)
             messages.success(request, 'You are registered successfully')
-            return redirect('login')
+            return redirect('home')
         else:
             messages.error(request, 'Registration Error')
     else:
@@ -24,8 +27,22 @@ def register(request):
     return render(request, 'news_app/register.html', {'form': form})
 
 
-def login(request):
-    return render(request, 'news_app/login.html')
+def user_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+
+    else:
+        form = UserLoginForm
+    return render(request, 'news_app/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
 
 def test(request):

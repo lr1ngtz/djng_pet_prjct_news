@@ -1,10 +1,24 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 import re
 
 from .models import News
+
+
+class UserLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label='Username',
+        # help_text='Some prompt for field',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control', 'autocomplete': 'off'
+            })
+    )
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
 
 class UserRegistrationForm(UserCreationForm):
