@@ -3,17 +3,16 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
-from .forms import NewsForm
+from .forms import NewsForm, UserRegistrationForm
 from .models import Category, News
 from .utils import MyMixin
 
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'You are registered successfully')
@@ -21,7 +20,7 @@ def register(request):
         else:
             messages.error(request, 'Registration Error')
     else:
-        form = UserCreationForm()
+        form = UserRegistrationForm()
     return render(request, 'news_app/register.html', {'form': form})
 
 
