@@ -5,8 +5,9 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.core.mail import send_mail
 
-from .forms import NewsForm, UserRegistrationForm, UserLoginForm
+from .forms import NewsForm, UserRegistrationForm, UserLoginForm, ContactForm
 from .models import Category, News
 from .utils import MyMixin
 
@@ -43,6 +44,30 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def test_smtp(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            mail = send_mail(
+                subject=form.cleaned_data['subject'],
+                message=form.cleaned_data['content'],
+                from_email='pvl.klchkv@gmail.com',
+                recipient_list=['sko0hlol@gmail.com'],
+                fail_silently=False
+            )
+            if mail:
+                messages.success(request, 'The email was sent!')
+                return redirect('home')
+            else:
+                messages.error(request, 'Sending error')
+        else:
+            messages.error(request, 'Registration Error')
+    else:
+        form = ContactForm()
+    context = {'form': form}
+    return render(request, 'news_app/test_smtp.html', context)
 
 
 def test(request):

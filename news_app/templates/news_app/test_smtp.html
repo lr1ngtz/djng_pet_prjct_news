@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+  {% comment %} If we need override block 'title' and call parent method(data from block 'title' of base template) {% endcomment %}
+  Feedback :: {{ block.super }}
+
+{% endblock title %}
+
+{% block sidebar %}
+  {% include "inc/_sidebar.html" %}
+{% endblock sidebar %}
+
+{% block content %}
+
+  <h1>Feedback</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary btn-block">Send</button>
+  </form>
+
+{% endblock content %}

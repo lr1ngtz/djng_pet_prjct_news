@@ -7,6 +7,19 @@ import re
 from .models import News
 
 
+class ContactForm(forms.Form):
+    subject = forms.CharField(
+        label='Subject',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control', 'autocomplete': 'off'
+            })
+    )
+    content = forms.CharField(
+        label='Content',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5})
+    )
+
+
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
         label='Username',
@@ -51,6 +64,7 @@ class UserRegistrationForm(UserCreationForm):
         #     'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
         #     'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
         # }
+
 
 class NewsForm(forms.ModelForm):
     class Meta:
