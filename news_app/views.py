@@ -46,7 +46,7 @@ def user_logout(request):
     return redirect('login')
 
 
-def test_smtp(request):
+def contacts(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -63,11 +63,11 @@ def test_smtp(request):
             else:
                 messages.error(request, 'Sending error')
         else:
-            messages.error(request, 'Registration Error')
+            messages.error(request, 'Validation Error')
     else:
         form = ContactForm()
     context = {'form': form}
-    return render(request, 'news_app/test_smtp.html', context)
+    return render(request, 'news_app/contacts.html', context)
 
 
 def test(request):

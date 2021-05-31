@@ -27,6 +27,9 @@
           {% endif %}
           <div class="media-body">
             <h5 class="card-title">{{ item.title }}</h5>
+            <!--filter 'safe' is handling HMTL tags. For example: if we write <h1>some text</h1> without filter 'safe'
+            we will see in our field '<h1>some text</h1>', if write with filter 'safe', we will see the text processed
+            according to the HTML rules 'some text'-->
             <p class="card-text">{{ item.content|safe|linebreaks|truncatewords:50 }}</p>
             <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Read more...</a>
           </div>
