@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'ckeditor',
+    'ckeditor_uploader',
     'debug_toolbar',
+
     'news_app.apps.NewsAppConfig',
 ]
 
@@ -129,7 +132,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'my_site/static'),
 
 ]
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -157,3 +159,5 @@ with open('/home/lr1n/PROJECTS/django_projects/test_site/my_site_project/pass_sm
 EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'default from email'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
