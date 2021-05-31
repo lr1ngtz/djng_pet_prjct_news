@@ -18,6 +18,14 @@
       <div class="row">
 
         <div class="col-md-3">
+          {% load cache %}
+          <!--Caching time is specified in seconds. What is that mean 'cache'? we can cache our sidebar (any element of programm: view,
+          template, block and etc.) put it in some place (in our case it is 'django_cache' directory) and use it without creating an
+          SQL-query (whole HTML-page is generated with SQL-queries: show sidebar - 1 sql-query, show categories - 1 sql-query and etc.)
+          until the specified time has passed (30 seconds in our example)-->
+          {% comment %} {% cache 30 sidebar %}
+            {% block sidebar %}SIDEBAR{% endblock sidebar  %}
+          {% endcache %} {% endcomment %}
           {% block sidebar %}SIDEBAR{% endblock sidebar  %}
         </div>
 

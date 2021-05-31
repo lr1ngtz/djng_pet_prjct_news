@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from .views import *
 
@@ -10,6 +11,8 @@ urlpatterns = [
     path('test/', test, name='test'),
     path('contacts/', contacts, name='contacts'),
     # path("", index, name="home"),
+    # caching option https://docs.djangoproject.com/en/3.2/topics/cache/
+    # path("", cache_page(60)(HomeNews.as_view()), name="home"),
     path("", HomeNews.as_view(), name="home"),
     # path("category/<int:category_id>/", get_category, name="category"),
     path(
