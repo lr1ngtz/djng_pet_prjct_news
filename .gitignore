@@ -6,3 +6,5 @@ db.sqlite3
 pass_smtp.txt
 # user smtp
 user_smtp.txt
+# secret key
+secret_key.txt
