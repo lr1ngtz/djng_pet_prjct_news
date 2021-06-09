@@ -8,3 +8,5 @@ pass_smtp.txt
 user_smtp.txt
 # secret key
 secret_key.txt
+
+.vscode
